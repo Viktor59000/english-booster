@@ -526,6 +526,7 @@ function openSetup(deck){
 }
 function start(){
   var pool=poolFor(S.deck).filter(function(c){return isDue(c.id)});
+  if(S.deck==='all'||S.fmt==='mix')pool=shuffle(pool); /* new cards drawn at random; reviews still come first */
   pool.sort(function(a,b){var sa=cst(a.id),sb=cst(b.id);if(sa&&!sb)return -1;if(!sa&&sb)return 1;return (sa?sa.due:0)-(sb?sb.due:0);});
   if(S.cap!==999)pool=pool.slice(0,S.cap);
   if(!pool.length)pool=poolFor(S.deck).slice(0,S.cap===999?999:S.cap);
@@ -535,7 +536,8 @@ function start(){
 }
 function nextCard(){
   if(!S.queue.length)return finish();
-  S.cur=CARDS.find(function(c){return c.id===S.queue.shift()});
+  var nid=S.queue.shift();
+  S.cur=CARDS.find(function(c){return c.id===nid});
   S.fmtCur=S.fmt==='mix'?FORMATS[Math.floor(Math.random()*FORMATS.length)]:S.fmt;
   S.revealed=false;renderCard();
 }
