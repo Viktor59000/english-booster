@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>English Booster</title>
+<meta name="description" content="Réviser le vocabulaire et les notions d'anglais B3 : répétition espacée, rappel actif, phrases d'exemple, audio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Design: iOS-style — grouped lists on a soft background, translucent chrome,
+   segmented controls, one blue accent, system typography, spring-like motion. */
+:root{
+  --bg:#f2f2f7; --surface:#ffffff; --surface-2:#ececef; --elevated:#ffffff;
+  --fg:#1c1c1e; --muted:#6b6b70; --faint:#a1a1a8;
+  --line:rgba(60,60,67,.11); --line-2:rgba(60,60,67,.20);
+  --accent:#0a7cff; --accent-press:#0a63cf; --accent-soft:#e7f0ff;
+  --good:#1f9e52; --good-soft:#e3f6ea; --bad:#e23b30; --bad-soft:#fbe6e4;
+  --seg-thumb:#ffffff; --glass:rgba(248,248,251,.72);
+  --shadow-s:0 .5px 1px rgba(0,0,0,.05),0 2px 6px rgba(20,24,40,.05);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px rgba(20,24,40,.08);
+  --r:18px; --r-s:12px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,Inter,Roboto,sans-serif;
+  --spring:cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#2c2c2e; --elevated:#1c1c1e;
+  --fg:#f5f5f7; --muted:#9b9ba2; --faint:#6a6a70;
+  --line:rgba(120,120,128,.28); --line-2:rgba(120,120,128,.42);
+  --accent:#0a84ff; --accent-press:#4aa3ff; --accent-soft:#0e2744;
+  --good:#30d158; --good-soft:#10331d; --bad:#ff453a; --bad-soft:#3a1714;
+  --seg-thumb:#636366; --glass:rgba(28,28,30,.7);
+  --shadow-s:0 .5px 1px rgba(0,0,0,.4); --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#2c2c2e; --elevated:#1c1c1e;
+  --fg:#f5f5f7; --muted:#9b9ba2; --faint:#6a6a70;
+  --line:rgba(120,120,128,.28); --line-2:rgba(120,120,128,.42);
+  --accent:#0a84ff; --accent-press:#4aa3ff; --accent-soft:#0e2744;
+  --good:#30d158; --good-soft:#10331d; --bad:#ff453a; --bad-soft:#3a1714;
+  --seg-thumb:#636366; --glass:rgba(28,28,30,.7);
+  --shadow-s:0 .5px 1px rgba(0,0,0,.4); --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  padding-top:env(safe-area-inset-top,0px)}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.1;font-weight:700;text-wrap:balance}
+button{font-family:inherit;cursor:pointer;color:inherit}
+input,textarea{font-family:inherit}
+.tnum{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px;margin:0 auto;
+  padding-left:max(18px,env(safe-area-inset-left,0px));
+  padding-right:max(18px,env(safe-area-inset-right,0px))}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:var(--glass);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.topbar .wrap{display:flex;align-items:center;gap:12px;height:52px}
+.appname{font-weight:600;font-size:17px;letter-spacing:-.01em;margin-right:auto}
+.appname small{color:var(--muted);font-weight:500}
+.iconbtn{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface-2);display:grid;place-items:center;color:var(--fg);transition:transform .2s var(--spring),background .2s}
+.iconbtn:active{transform:scale(.9)}
+.scrolledge{position:sticky;top:calc(52px + env(safe-area-inset-top,0px));height:16px;z-index:19;margin-bottom:-16px;
+  background:linear-gradient(var(--bg),rgba(0,0,0,0));pointer-events:none}
+
+main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.view{padding-top:8px;animation:fade .35s var(--spring)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.large-title{font-size:32px;letter-spacing:-.03em;margin:14px 0 2px}
+.subtitle{color:var(--muted);font-size:15px;margin:0 0 20px;max-width:58ch}
+.group-h{font-size:13px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);margin:26px 4px 9px}
+
+/* grouped list (cards) */
+.list{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-s);overflow:hidden}
+.row{display:flex;align-items:center;gap:14px;width:100%;border:none;background:none;text-align:left;
+  padding:15px 16px;position:relative;transition:background .15s}
+.row + .row::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+.row:active{background:var(--surface-2)}
+.row .main{min-width:0;flex:1}
+.row .title{font-weight:600;font-size:16.5px;letter-spacing:-.01em}
+.row .sub{color:var(--muted);font-size:13.5px;margin-top:2px}
+.row .trail{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:15px;flex:none}
+.row .trail .n{font-weight:600}
+.row .trail .n.due{color:var(--accent)}
+.row .trail .n.ok{color:var(--good)}
+.chev{color:var(--faint);display:grid;place-items:center}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;
+  font-weight:600;font-size:17px;letter-spacing:-.01em;padding:14px 20px;border:none;
+  background:var(--surface-2);color:var(--fg);transition:transform .18s var(--spring),background .2s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:active{background:var(--accent-press)}
+.btn.good{background:var(--good);color:#fff}
+.btn.bad{background:var(--bad);color:#fff}
+.btn.tinted{background:var(--accent-soft);color:var(--accent)}
+.btn.block{width:100%}
+.btn.lg{padding:16px 22px;font-size:18px;border-radius:16px}
+.btn:disabled{opacity:.45}
+.btn.plain{background:none;color:var(--accent);padding:10px 6px;font-size:16px}
+.rowbtns{display:flex;gap:12px}
+.rowbtns .btn{flex:1}
+
+/* segmented control */
+.seg{display:inline-flex;background:var(--surface-2);border-radius:11px;padding:2px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{border:none;background:transparent;color:var(--muted);font-weight:600;font-size:14.5px;
+  letter-spacing:-.01em;padding:8px 15px;border-radius:9px;white-space:nowrap;transition:color .2s}
+.seg button.on{background:var(--seg-thumb);color:var(--fg);box-shadow:var(--shadow-s)}
+
+/* study */
+.study-head{display:flex;align-items:center;gap:14px;margin:6px 0 20px}
+.track{flex:1;height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s var(--spring)}
+.pc{font-size:15px;color:var(--muted);font-weight:600}
+.flash{background:var(--surface);border-radius:22px;box-shadow:var(--shadow);padding:34px 24px;min-height:300px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px}
+.cue{font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--faint)}
+.term{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.08}
+.term.sm{font-size:26px}
+.reveal-in{animation:grow .45s var(--spring)}
+@keyframes grow{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.answer{font-size:24px;font-weight:700;letter-spacing:-.02em;color:var(--accent)}
+.defn{font-size:15px;color:var(--muted);max-width:44ch;margin-top:-4px}
+.ex{font-size:15.5px;color:var(--fg);max-width:46ch;background:var(--surface-2);border-radius:14px;padding:12px 15px;line-height:1.45}
+.ex b{color:var(--accent);font-weight:700}
+.speak{width:46px;height:46px;border-radius:50%;border:none;background:var(--accent-soft);color:var(--accent);
+  display:grid;place-items:center;transition:transform .18s var(--spring)}
+.speak:active{transform:scale(.88)}
+.flash-foot{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+.typed{width:100%;font-size:19px;text-align:center;padding:15px 16px;border-radius:14px;border:1.5px solid var(--line-2);
+  background:var(--surface);color:var(--fg);transition:border-color .2s,background .2s}
+.typed:focus{outline:none;border-color:var(--accent)}
+.typed.ok{border-color:var(--good);background:var(--good-soft)}
+.typed.no{border-color:var(--bad);background:var(--bad-soft)}
+.verdict{font-size:16px;font-weight:600}
+.verdict.ok{color:var(--good)}.verdict.no{color:var(--bad)}
+.hint{color:var(--muted);font-size:14px;text-align:center}
+
+/* done */
+.done{background:var(--surface);border-radius:22px;box-shadow:var(--shadow);padding:40px 24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:14px}
+.stats{display:flex;gap:30px;margin:8px 0}
+.stat b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em}
+.stat span{font-size:13px;color:var(--muted)}
+.ring{width:64px;height:64px}
+
+/* search */
+.search{position:relative;margin:4px 0 2px}
+.search input{width:100%;font-size:16px;padding:11px 14px 11px 40px;border-radius:12px;border:none;
+  background:var(--surface-2);color:var(--fg)}
+.search input:focus{outline:2px solid var(--accent)}
+.search .sic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--faint);display:grid;place-items:center;pointer-events:none}
+.lexrow{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;position:relative}
+.lexrow + .lexrow::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+.lexrow .txt{min-width:0;flex:1}
+.lexrow .en{font-weight:600;font-size:16px;letter-spacing:-.01em}
+.lexrow .fr{color:var(--muted);font-size:14.5px}
+.lexrow .ex2{display:block;font-size:13.5px;color:var(--faint);margin-top:4px;font-style:italic}
+.lexrow .sp{flex:none;width:34px;height:34px;border-radius:50%;background:var(--surface-2);color:var(--accent);
+  display:grid;place-items:center;border:none;transition:transform .18s var(--spring)}
+.lexrow .sp:active{transform:scale(.86)}
+.empty{text-align:center;color:var(--muted);padding:46px 20px}
+
+/* notions */
+.lesson{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-s);padding:20px 20px;margin-bottom:16px}
+.lesson h3{font-size:20px;letter-spacing:-.02em}
+.lesson .eyebrow{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.lesson p{margin:10px 0}
+.lesson ul{margin:10px 0;padding-left:20px}
+.lesson li{margin:5px 0}
+.lesson .exs{color:var(--muted);font-size:14.5px}
+.kw{background:var(--surface-2);border-radius:6px;padding:1px 7px;font-weight:600;font-size:.94em}
+.gtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;overflow:hidden;border-radius:12px}
+.gtable th,.gtable td{border-bottom:1px solid var(--line);padding:9px 11px;text-align:left}
+.gtable th{background:var(--surface-2);font-weight:600}
+.gtable tr:last-child td{border-bottom:none}
+.callout{background:var(--accent-soft);border-radius:13px;padding:13px 15px;font-size:14.5px;color:var(--fg);margin-top:12px}
+
+/* feedback */
+.fb-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow-s);padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.note-box{background:var(--surface-2);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--muted);line-height:1.5}
+.note-box code{font-size:13px;word-break:break-all}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;
+  background:var(--glass);backdrop-filter:saturate(180%) blur(22px);-webkit-backdrop-filter:saturate(180%) blur(22px);
+  border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar .inner{max-width:720px;margin:0 auto;display:flex}
+.tabbar button{flex:1;border:none;background:none;color:var(--faint);
+  display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 7px;font-size:10.5px;font-weight:600;letter-spacing:.01em;
+  transition:color .2s,transform .2s var(--spring)}
+.tabbar button:active{transform:scale(.92)}
+.tabbar button.on{color:var(--accent)}
+.hidden{display:none!important}
+footer{color:var(--faint);font-size:12.5px;text-align:center;padding:28px 10px 8px}
+
+@media (prefers-reduced-transparency:reduce){
+  .topbar,.tabbar{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto}
+  .view,.reveal-in{animation:none}
+  .btn:active,.iconbtn:active,.speak:active,.tabbar button:active,.lexrow .sp:active{transform:none}
+}
+@media (prefers-contrast:more){
+  :root{--line:rgba(60,60,67,.5);--line-2:rgba(60,60,67,.7)}
+  .row .sub,.lexrow .fr{color:var(--fg)}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar"><div class="wrap">
+  <span class="appname">English&nbsp;Booster <small>· B3</small></span>
+  <button class="iconbtn" id="themeBtn" aria-label="Thème clair ou sombre" title="Thème"></button>
+</div></header>
+<div class="scrolledge"></div>
+
+<main><div class="wrap">
+  <section id="view-home" class="view"></section>
+  <section id="view-study" class="view hidden"></section>
+  <section id="view-notions" class="view hidden"></section>
+  <section id="view-lex" class="view hidden"></section>
+  <section id="view-feedback" class="view hidden"></section>
+</div></main>
+
+<nav class="tabbar"><div class="inner" id="tabbar"></div></nav>
+
+<script>
+/* ============ CONFIG ============ */
+/* Colle ici l'URL de ton Google Form (bouton « Partager » → lien) pour activer l'envoi. */
+const FEEDBACK_FORM_URL = "";
+
+/* ============ DATA ============ */
+const DECKS=[
+  {id:'toeic', name:'Vocabulaire TOEIC', sub:'Mots de tes fiches d\u2019écoute'},
+  {id:'travel', name:'Travel & aéroport', sub:'Voyage, avion, formalités'},
+  {id:'vanlife', name:'Van life & design', sub:'Camping, véhicules, suffixes'},
+];
+/* [deck, en, fr, définition courte, phrase d'exemple] */
+const RAW=[
+['toeic','a newsroom','une salle de rédaction','the office where news is compiled','Reporters hurried around the busy newsroom.'],
+['toeic','to undermine','saper, discréditer','to weaken someone\u2019s authority','His constant jokes undermine her authority.'],
+['toeic','Taoiseach','le Premier ministre irlandais','Irish PM (ex. Micheál Martin)','The Taoiseach addressed the Irish parliament.'],
+['toeic','Fianna Fáil','un parti politique irlandais','','Fianna Fáil won the most seats.'],
+['toeic','to lean over','se pencher','','She leaned over to pick up the pen.'],
+['toeic','cheeky','effronté, impertinent','overly bold','He gave a cheeky grin and ran off.'],
+['toeic','a bite','une bouchée, un morceau','a small piece','Can I have a bite of your sandwich?'],
+['toeic','sweetly','gentiment, tendrement','tenderly, innocently','The child smiled sweetly at her grandmother.'],
+['toeic','a ladder','une échelle','','He climbed the ladder to fix the roof.'],
+['toeic','to be taken off','être enlevé, être retiré','to be removed','The faulty product was taken off the shelves.'],
+['toeic','a rack','un portant, un support','a stand to hold or hang things','Hang your coat on the rack.'],
+['toeic','to look forward to','attendre avec impatience','to await with excitement','I look forward to seeing you soon.'],
+['toeic','to postpone','reporter, repousser','to delay','They postponed the meeting until Friday.'],
+['toeic','a supplier','un fournisseur','a provider','Our main supplier delivers every Monday.'],
+['toeic','comprehensive','exhaustif, complet','which covers everything','The report gives a comprehensive overview.'],
+['toeic','to run a program','diriger / gérer un programme','to manage a program','She runs a training program for new staff.'],
+['toeic','a memorial','un monument commémoratif','a commemorative monument','A memorial was built for the soldiers.'],
+['toeic','to be held','se tenir, avoir lieu','(event) to take place','The ceremony will be held on Sunday.'],
+['toeic','to hijack','détourner','to seize control of','Armed men tried to hijack the plane.'],
+['toeic','a hijacker','un pirate de l\u2019air','','The hijacker demanded a ransom.'],
+['toeic','overhead','au-dessus (des têtes)','above people\u2019s heads','A plane flew overhead.'],
+['toeic','candy floss','la barbe à papa','(US: cotton candy)','The kids shared pink candy floss at the fair.'],
+['toeic','delight','la joie, le plaisir','joy, pleasure','She opened the gift with delight.'],
+['toeic','to spin up','faire tourner','to cause to rotate','The machine spins the sugar up into threads.'],
+['toeic','sprinkles','des vermicelles de sucre','small coloured sugar strands','He added colourful sprinkles to the cake.'],
+['toeic','to wrap','envelopper, emballer','to cover','Wrap the present before the party.'],
+['toeic','to pull back','reculer, se retirer','to retreat','The army was forced to pull back.'],
+['toeic','to stand down','démissionner, se retirer','to resign','The minister agreed to stand down.'],
+['toeic','an MP','un député','Member of Parliament','The MP voted against the new law.'],
+['toeic','Number 10','le 10 Downing Street','résidence du PM britannique','The decision came from Number 10.'],
+['toeic','the House of Commons','la Chambre des communes','elected body of 650 MPs','The bill was debated in the House of Commons.'],
+['toeic','to call for','demander, réclamer','to request','Protesters called for change.'],
+['toeic','to be turfed out','être viré, être évincé','to be forced out','He was turfed out of the club.'],
+['toeic','former','précédent, ancien','previous','The former president gave a speech.'],
+['toeic','to call time','mettre fin à quelque chose','to put an end to something','They called time on the project.'],
+['toeic','to chair','présider','to lead a meeting','She will chair the committee.'],
+['toeic','to be dressed up','être déguisé','in disguise / in costume','The children were dressed up for Halloween.'],
+['toeic','a security guard','un agent de sécurité','person who protects a building','A security guard watched the entrance.'],
+['toeic','a cat flap','une chatière','small opening door for cats','The cat slipped out through the cat flap.'],
+['toeic','a deadline','une date limite, une échéance','','We missed the deadline by one day.'],
+['toeic','a proposal','une proposition','a written plan','She submitted a detailed proposal.'],
+['toeic','to ease','réduire, apaiser','to reduce pressure','The medicine eased the pain.'],
+['toeic','to bring down','faire tomber','','The scandal brought down the government.'],
+['toeic','to tap into','exploiter, tirer profit de','','The company tapped into a new market.'],
+['toeic','the midterm elections','les élections de mi-mandat','(US)','The midterm elections were very close.'],
+['toeic','a tray','un plateau','a flat receptacle for food','She carried the drinks on a tray.'],
+['toeic','a stove','une cuisinière','a cooking appliance','He heated the soup on the stove.'],
+['toeic','to grab','saisir, attraper','to take hold of','She grabbed her bag and left.'],
+['toeic','a cupboard','un placard','','Put the plates back in the cupboard.'],
+['toeic','to spy on','espionner','','They spied on the rival company.'],
+['toeic','to weld','souder','','Workers welded the metal frames together.'],
+['toeic','take-off','le décollage','','The plane is ready for take-off.'],
+['toeic','a runway','une piste','airport runway','The plane landed on the runway.'],
+['toeic','run by','géré par','managed by','The shop is run by a local family.'],
+['toeic','a ranger','un garde-forestier','a park warden','The ranger protects the national park.'],
+['toeic','to inflate','gonfler','to fill with gas or air','He inflated the balloons for the party.'],
+['toeic','to snatch','arracher, attraper vivement','to grab quickly','A thief snatched her phone.'],
+['toeic','to slap','gifler, une claque','an open-handed smack','She slapped him across the face.'],
+['toeic','a blow','un coup','a punch','He received a blow to the head.'],
+['toeic','siblings','frères et sœurs','brothers and sisters','She has three younger siblings.'],
+['toeic','to cancel','annuler','','They cancelled the flight.'],
+['toeic','an appointment','un rendez-vous','','I have a dentist appointment at three.'],
+['toeic','a fellow','un gars, un type','a guy','He\u2019s a friendly fellow.'],
+['toeic','to stand for','vouloir dire ; défendre','to represent / to support','What does \u201cUK\u201d stand for?'],
+['toeic','to stand for your beliefs','défendre ses convictions','','You must stand for your beliefs.'],
+['toeic','a resume','un CV','(US) curriculum vitae','She sent her resume to the firm.'],
+['travel','the runway','la piste','where planes take off and land','The plane sped down the runway.'],
+['travel','the luggage carousel','le tapis à bagages','','We waited at the luggage carousel.'],
+['travel','a boarding pass','une carte d\u2019embarquement','(= boarding card)','Show your boarding pass at the gate.'],
+['travel','to show your passport','présenter son passeport','','You must show your passport at control.'],
+['travel','the departure lounge','la salle d\u2019embarquement','','We relaxed in the departure lounge.'],
+['travel','a seat belt','une ceinture de sécurité','','Please fasten your seat belt.'],
+['travel','the boarding gate','la porte d\u2019embarquement','','Go to the boarding gate now.'],
+['travel','the gate number','le numéro de porte','','Check the gate number on the screen.'],
+['travel','a suitcase','une valise','','My suitcase was too heavy.'],
+['travel','a trolley bag','une valise à roulettes','','She pulled her trolley bag behind her.'],
+['travel','a travel agency','une agence de voyage','','We booked the trip at a travel agency.'],
+['travel','duty-free shopping','les achats hors taxes','','They enjoyed some duty-free shopping.'],
+['travel','an airplane','un avion','','The airplane took off on time.'],
+['travel','the check-in desk','le comptoir d\u2019enregistrement','(= check-in counter)','Go to the check-in desk first.'],
+['travel','passport control','le contrôle des passeports','','There was a long queue at passport control.'],
+['travel','baggage claim','le retrait des bagages','','Meet me at baggage claim.'],
+['travel','a flight itinerary','un itinéraire de vol','','Print your flight itinerary.'],
+['travel','to take off','décoller','','The plane will take off soon.'],
+['travel','to board','embarquer','','Passengers may now board.'],
+['travel','to check in','s\u2019enregistrer','','We checked in two hours early.'],
+['travel','to clear airport security','passer les contrôles de sécurité','','It took ages to clear airport security.'],
+['travel','a shuttle bus','une navette','','Take the shuttle bus to the terminal.'],
+['travel','a cab','un taxi','(US)','We caught a cab to the hotel.'],
+['travel','a ferry boat','un ferry','','The ferry boat crossed the channel.'],
+['vanlife','a camper van','un van aménagé','','They toured Spain in a camper van.'],
+['vanlife','a caravan','une caravane','','We towed the caravan to the coast.'],
+['vanlife','a motorhome','un camping-car','(US: an RV)','Their motorhome has a small kitchen.'],
+['vanlife','a tent','une tente','','We slept in a small tent.'],
+['vanlife','a design classic','un classique du design','','The VW van is a design classic.'],
+['vanlife','motorised','motorisé','using an engine to move around','He used a motorised trolley.'],
+['vanlife','to sketch','esquisser, croquer','to quickly draw something','She sketched the van\u2019s design.'],
+['vanlife','to maximise','maximiser','to make as large as possible','The flat front maximised cargo space.'],
+['vanlife','cargo','la cargaison, le fret','goods carried in a vehicle','The van carried heavy cargo.'],
+['vanlife','suspension','la suspension','wheel system for a smoother ride','The soft suspension gave a smooth ride.'],
+['vanlife','to coincide with','coïncider avec','to happen at the same time','Its launch coincided with the festival.'],
+['vanlife','to customise','personnaliser','to change to suit someone\u2019s needs','You can customise the interior.'],
+['vanlife','iconic','emblématique','very famous and recognisable','The camper van became truly iconic.'],
+['vanlife','prominent','bien visible, proéminent','easily seen or noticed','The logo is in a prominent position.'],
+['vanlife','a windscreen','un pare-brise','','Rain hit the windscreen.'],
+['vanlife','two-tone paint','une peinture bicolore','','The van had classic two-tone paint.'],
+['vanlife','an air-cooled engine','un moteur refroidi par air','','The air-cooled engine sat at the back.'],
+['vanlife','affordable','abordable','cheap enough to afford','The van was cheap and affordable.'],
+['vanlife','adaptable','adaptable','able to change for new situations','The design is highly adaptable.'],
+['vanlife','collectable','de collection','worth collecting','Old models are now collectable.'],
+['vanlife','recognisable','reconnaissable','easy to identify','The shape is instantly recognisable.'],
+['vanlife','removable','amovible','that can be taken off','The table is removable.'],
+['vanlife','adjustable','réglable','that can be adjusted','The seats are fully adjustable.'],
+['vanlife','recyclable','recyclable','that can be recycled','The packaging is recyclable.'],
+['vanlife','an appliance','un appareil (électroménager)','','The kitchen has two appliances.'],
+['vanlife','to pop up','se déplier, surgir','','The roof pops up for sleeping.'],
+];
+const CARDS=RAW.map((c,i)=>({id:'c'+i,deck:c[0],en:c[1],fr:c[2],note:c[3],ex:c[4]}));
+
+const NOTIONS=[
+  {tag:'Suffixe', title:'-ise / -ize',
+   html:`<p>Ce suffixe transforme un <b>nom ou un adjectif en verbe</b>, avec l\u2019idée de « rendre / produire l\u2019effet de ».</p>
+   <ul><li><span class="kw">modern</span> → <span class="kw">to modernise</span> — moderniser</li>
+   <li><span class="kw">real</span> → <span class="kw">to realise</span> — réaliser</li>
+   <li><span class="kw">custom</span> → <span class="kw">to customise</span> — personnaliser</li>
+   <li>aussi : organise, authorise, exercise, motorise, maximise…</li></ul>
+   <div class="callout"><b>UK vs US :</b> le britannique écrit <span class="kw">-ise</span> (realis<b>e</b>d, organis<b>e</b>), l\u2019américain écrit <span class="kw">-ize</span> (realiz<b>e</b>d, organiz<b>e</b>). Le TOEIC accepte les deux — reste cohérent dans une même copie.</div>`},
+  {tag:'Suffixe', title:'-able',
+   html:`<p><span class="kw">verbe + able</span> = adjectif signifiant « <b>qui peut être + participe</b> » (que l\u2019on peut faire).</p>
+   <ul><li>recycle → <span class="kw">recyclable</span></li>
+   <li>afford → <span class="kw">affordable</span> (abordable)</li>
+   <li>recognise → <span class="kw">recognisable</span> (reconnaissable)</li>
+   <li>remove → <span class="kw">removable</span> · adjust → <span class="kw">adjustable</span> · adapt → <span class="kw">adaptable</span></li></ul>
+   <div class="callout"><b>Orthographe :</b> le <span class="kw">-e</span> final muet saute (adjust<b>able</b>, remov<b>able</b>), sauf après <span class="kw">-ce / -ge</span> pour garder le son doux (chang<b>eable</b>, notic<b>eable</b>).</div>`},
+  {tag:'Grammaire', title:'be going to vs will',
+   html:`<p>Deux façons de parler du <b>futur</b>, selon la certitude.</p>
+   <p><span class="kw">be going to</span> + verbe → une <b>intention</b> / un futur proche déjà décidé, ou une prédiction fondée sur un <b>indice présent</b>.</p>
+   <p class="exs">I\u2019m going to visit my family next month. — Look at those clouds, it\u2019s going to rain.</p>
+   <p><span class="kw">will</span> + verbe → une <b>décision prise au moment où on parle</b>, une <b>promesse</b>, ou une prédiction <b>incertaine</b>.</p>
+   <p class="exs">OK, I\u2019ll help you. — Next year, I will learn a new language.</p>
+   <table class="gtable"><thead><tr><th></th><th>Affirmatif</th><th>Négatif</th><th>Question</th></tr></thead><tbody>
+   <tr><th>I</th><td>I\u2019m going to…</td><td>I\u2019m not going to…</td><td>Am I going to…?</td></tr>
+   <tr><th>He / She / It</th><td>She\u2019s going to…</td><td>She isn\u2019t going to…</td><td>Is she going to…?</td></tr>
+   <tr><th>You / We / They</th><td>They\u2019re going to…</td><td>They aren\u2019t going to…</td><td>Are they going to…?</td></tr>
+   </tbody></table>
+   <div class="callout"><b>À l\u2019oral :</b> on n\u2019entend pas le « g » final de <i>going</i> — <i>going to</i> se dit souvent « gonna » /ˈɡɒnə/.</div>`},
+];
+
+/* ============ ICONS ============ */
+const IC={
+ chev:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+ speak:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.6 6a9 9 0 0 1 0 12"/></svg>',
+ close:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ study:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M7 3h10"/><path d="M5 9h14"/></svg>',
+ notions:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3"/></svg>',
+ lex:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>',
+ flag:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></svg>',
+ sun:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>',
+};
+
+/* ============ STATE ============ */
+const LS_PROG='eb_progress_v2', LS_THEME='eb_theme';
+const DAY=86400000, INTERVALS={1:1,2:2,3:4,4:8,5:16};
+let progress=load();
+function load(){try{return JSON.parse(localStorage.getItem(LS_PROG))||{}}catch(e){return{}}}
+function save(){try{localStorage.setItem(LS_PROG,JSON.stringify(progress))}catch(e){}}
+const now=()=>Date.now();
+const cst=id=>progress[id]||null;
+const isDue=id=>{const s=cst(id);return !s||(s.due||0)<=now()};
+const deckCards=d=>CARDS.filter(c=>c.deck===d);
+const dueCount=d=>deckCards(d).filter(c=>isDue(c.id)).length;
+const newCount=d=>deckCards(d).filter(c=>!cst(c.id)).length;
+const mastered=d=>deckCards(d).filter(c=>{const s=cst(c.id);return s&&s.box>=5}).length;
+
+/* ============ UTIL ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const norm=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\b(to|a|an|the)\b/g,'').replace(/\s+/g,' ').trim();
+function exHTML(card){ // bold the headword inside the example
+  const head=card.en.replace(/^(to|a|an|the)\s+/i,'').split(' ')[0];
+  let s=esc(card.ex); if(!s)return '';
+  try{s=s.replace(new RegExp('('+head.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','i'),'<b>$1</b>');}catch(e){}
+  return `<div class="ex">${s}</div>`;
+}
+let voices=[];
+function lv(){voices=window.speechSynthesis?speechSynthesis.getVoices():[]}
+if(window.speechSynthesis){lv();speechSynthesis.onvoiceschanged=lv;}
+function speak(t){
+  if(!window.speechSynthesis)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/\(.*?\)/g,'').trim());
+  u.lang='en-GB';u.rate=.9;
+  const v=voices.find(v=>/en-GB/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang));
+  if(v)u.voice=v;speechSynthesis.speak(u);
+}
+
+/* ============ TABS ============ */
+const TABS=[['home','Réviser',IC.study],['notions','Notions',IC.notions],['lex','Lexique',IC.lex],['feedback','Signaler',IC.flag]];
+const VIEWS=['home','study','notions','lex','feedback'];
+let curTab='home';
+function buildTabs(){
+  $('#tabbar').innerHTML=TABS.map(t=>`<button data-tab="${t[0]}">${t[2]}<span>${t[1]}</span></button>`).join('');
+  document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+}
+function show(tab){
+  curTab=tab;
+  VIEWS.forEach(v=>$('#view-'+v).classList.add('hidden')); // study is hidden unless a session opens it
+  $('#view-'+tab).classList.remove('hidden');
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  window.scrollTo(0,0);
+  if(tab==='home')renderHome();
+  if(tab==='notions')renderNotions();
+  if(tab==='lex')renderLex();
+  if(tab==='feedback')renderFeedback();
+}
+
+/* ============ HOME ============ */
+function renderHome(){
+  const v=$('#view-home');
+  let totalDue=0; DECKS.forEach(d=>totalDue+=dueCount(d.id));
+  const rows=DECKS.map(d=>{
+    const tot=deckCards(d.id).length, due=dueCount(d.id), fresh=newCount(d.id);
+    const trail = due? `<span class="n due tnum">${due}</span><span>à revoir</span>`
+                     : `<span class="n ok">à jour</span>`;
+    return `<button class="row" data-deck="${d.id}">
+      <div class="main"><div class="title">${esc(d.name)}</div>
+      <div class="sub">${esc(d.sub)} · ${tot} mots${fresh?` · ${fresh} nouveaux`:''}</div></div>
+      <div class="trail">${trail}</div><span class="chev">${IC.chev}</span></button>`;
+  }).join('');
+  v.innerHTML=`<h1 class="large-title">Réviser</h1>
+    <p class="subtitle">Chaque mot revient juste avant que tu l\u2019oublies, et tu retrouves la réponse de mémoire avant de la voir. ${totalDue?`<b>${totalDue} carte${totalDue>1?'s':''} à revoir aujourd\u2019hui.</b>`:'Tout est à jour pour aujourd\u2019hui.'}</p>
+    <div class="group-h">Paquets</div>
+    <div class="list">${rows}</div>
+    <footer>Progression enregistrée sur cet appareil. Quelques cartes par jour valent mieux qu\u2019une grosse séance.</footer>`;
+  v.querySelectorAll('.row').forEach(r=>r.onclick=()=>openSetup(r.dataset.deck));
+}
+
+/* ============ STUDY ============ */
+let S=null;
+function goStudy(){VIEWS.forEach(v=>$('#view-'+v).classList.add('hidden'));$('#view-study').classList.remove('hidden');window.scrollTo(0,0);}
+function openSetup(deck){
+  const d=DECKS.find(x=>x.id===deck), due=dueCount(deck), fresh=newCount(deck);
+  S={deck,dir:'recog',cap:20};
+  const v=$('#view-study');
+  v.innerHTML=`<button class="btn plain" id="back" style="margin:4px 0 2px">‹ Paquets</button>
+   <h1 class="large-title">${esc(d.name)}</h1>
+   <p class="subtitle">${due} carte${due>1?'s':''} à revoir${fresh?` · ${fresh} nouveau${fresh>1?'x':''}`:''}.</p>
+   <div class="group-h">Sens de révision</div>
+   <div class="seg" id="dir">
+     <button class="on" data-v="recog">EN → FR · reconnaître</button>
+     <button data-v="prod">FR → EN · écrire</button></div>
+   <div class="group-h">Longueur de la séance</div>
+   <div class="seg" id="cap">
+     <button data-v="10">10</button><button class="on" data-v="20">20</button>
+     <button data-v="30">30</button><button data-v="999">Tout</button></div>
+   <div style="height:26px"></div>
+   <button class="btn primary block lg" id="start">Commencer</button>
+   <p class="hint" style="margin-top:14px">« Écrire » le mot anglais ancre mieux, mais c\u2019est plus exigeant.</p>`;
+  goStudy();
+  $('#back').onclick=()=>show('home');
+  seg('#dir',x=>S.dir=x); seg('#cap',x=>S.cap=+x);
+  $('#start').onclick=start;
+}
+function seg(sel,cb){document.querySelectorAll(sel+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll(sel+' button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b.dataset.v);});}
+
+function start(){
+  let pool=deckCards(S.deck).filter(c=>isDue(c.id));
+  pool.sort((a,b)=>{const sa=cst(a.id),sb=cst(b.id);if(sa&&!sb)return -1;if(!sa&&sb)return 1;return (sa?sa.due:0)-(sb?sb.due:0);});
+  if(S.cap!==999)pool=pool.slice(0,S.cap);
+  if(!pool.length)pool=deckCards(S.deck).slice(0,S.cap===999?999:S.cap);
+  S.queue=pool.map(c=>c.id);S.total=S.queue.length;S.done=0;S.right=0;S.wrong=0;
+  nextCard();
+}
+function nextCard(){
+  if(!S.queue.length)return finish();
+  S.cur=CARDS.find(c=>c.id===S.queue.shift());S.revealed=false;renderCard();
+}
+function renderCard(){
+  const c=S.cur, prod=S.dir==='prod', frontEN=S.dir==='recog';
+  const front=frontEN?c.en:c.fr;
+  const pct=S.total?Math.min(100,Math.round(S.done/S.total*100)):0;
+  const v=$('#view-study');
+  v.innerHTML=`<div class="study-head">
+     <button class="iconbtn" id="quit" aria-label="Quitter">${IC.close}</button>
+     <div class="track"><i style="width:${pct}%"></i></div>
+     <span class="pc tnum">${S.done}/${S.total}</span></div>
+   <div class="flash">
+     <span class="cue">${frontEN?'Anglais':'Français'}</span>
+     <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center">
+       <span class="term ${front.length>20?'sm':''}">${esc(front)}</span>
+       ${frontEN?`<button class="speak" id="sp" aria-label="Écouter">${IC.speak}</button>`:''}
+     </div>
+     <div id="rev"></div>
+   </div>
+   <div class="flash-foot" id="foot"></div>`;
+  $('#quit').onclick=()=>{S.done>0?finish():show('home')};
+  if(frontEN)$('#sp').onclick=()=>speak(c.en);
+  const foot=$('#foot');
+  if(prod){
+    foot.innerHTML=`<input class="typed" id="tp" placeholder="Écris le mot anglais…" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+      <button class="btn primary block" id="ck">Vérifier</button>`;
+    const inp=$('#tp');setTimeout(()=>inp.focus(),50);
+    $('#ck').onclick=()=>check(inp.value);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();S.revealed?nextCard():check(inp.value);}});
+  }else{
+    foot.innerHTML=`<button class="btn primary block" id="rv">Afficher la réponse</button>`;
+    $('#rv').onclick=reveal;
+  }
+}
+function answerBlock(){
+  const c=S.cur, frontEN=S.dir==='recog', back=frontEN?c.fr:c.en;
+  return `<div class="reveal-in" style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:4px">
+    <div class="answer">${esc(back)}</div>
+    ${c.note?`<div class="defn">${esc(c.note)}</div>`:''}
+    ${exHTML(c)}
+    ${frontEN?'':`<button class="speak" id="sp2" aria-label="Écouter">${IC.speak}</button>`}
+  </div>`;
+}
+function reveal(){
+  S.revealed=true;
+  $('#rev').innerHTML=answerBlock();
+  if($('#sp2'))$('#sp2').onclick=()=>speak(S.cur.en);
+  $('#foot').innerHTML=`<div class="rowbtns"><button class="btn bad" id="bad">À revoir</button><button class="btn good" id="good">Je savais</button></div>`;
+  $('#good').onclick=()=>grade(true);$('#bad').onclick=()=>grade(false);
+}
+function check(val){
+  const c=S.cur;
+  if(S.revealed)return nextCard();
+  const acc=[c.en,c.en.replace(/\(.*?\)/g,'')];
+  const ok=norm(val)!=='' && acc.some(a=>norm(a)===norm(val));
+  S.revealed=true;commit(ok);
+  const inp=$('#tp');inp.classList.add(ok?'ok':'no');inp.disabled=true;
+  $('#rev').innerHTML=`<div class="reveal-in" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px">
+     <div class="verdict ${ok?'ok':'no'}">${ok?'Correct':'Réponse : '+esc(c.en)}</div>
+     ${c.note?`<div class="defn">${esc(c.note)}</div>`:''}${exHTML(c)}
+     <button class="speak" id="sp2" aria-label="Écouter">${IC.speak}</button></div>`;
+  $('#sp2').onclick=()=>speak(c.en);
+  $('#foot').innerHTML=`<button class="btn ${ok?'good':'tinted'} block" id="cont">Continuer</button>${ok?'':'<p class="hint">Cette carte reviendra bientôt.</p>'}`;
+  $('#cont').onclick=nextCard;
+}
+function grade(ok){commit(ok);nextCard();}
+function commit(ok){
+  const c=S.cur, s=cst(c.id)||{box:0}; let box=s.box||0;
+  box=ok?Math.min(box+1,5):1;
+  progress[c.id]={box,due:ok?now()+INTERVALS[box]*DAY:now(),seen:(s.seen||0)+1};
+  save();S.done++; if(ok)S.right++; else{S.wrong++; if(S.queue.length<8)S.queue.push(c.id);}
+}
+function finish(){
+  const acc=S.done?Math.round(S.right/S.done*100):0;
+  const C=2*Math.PI*28, off=C*(1-acc/100);
+  $('#view-study').innerHTML=`<div style="height:10px"></div><div class="done">
+    <svg class="ring" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+      <circle cx="32" cy="32" r="28" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"
+      stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 32 32)"/></svg>
+    <h2 style="font-size:24px">Séance terminée</h2>
+    <div class="stats"><div class="stat"><b class="tnum">${S.right}</b><span>sues</span></div>
+      <div class="stat"><b class="tnum">${S.wrong}</b><span>à revoir</span></div>
+      <div class="stat"><b class="tnum">${acc}%</b><span>réussite</span></div></div>
+    <p class="hint">Les cartes ratées reviendront en priorité.</p>
+    <div class="rowbtns" style="margin-top:6px;width:100%">
+      <button class="btn block" id="again">Autre séance</button>
+      <button class="btn primary block" id="home2">Terminer</button></div></div>`;
+  $('#home2').onclick=()=>show('home');$('#again').onclick=()=>openSetup(S.deck);
+}
+
+/* ============ NOTIONS ============ */
+function renderNotions(){
+  $('#view-notions').innerHTML=`<h1 class="large-title">Notions</h1>
+   <p class="subtitle">Les règles tombées dans tes fiches. À lire une fois, puis à reconnaître dans les exercices.</p>`+
+   NOTIONS.map(n=>`<div class="lesson"><div class="eyebrow">${esc(n.tag)}</div><h3>${esc(n.title)}</h3>${n.html}</div>`).join('');
+}
+
+/* ============ LEXIQUE ============ */
+let lexF='all', lexQ='';
+function renderLex(){
+  const v=$('#view-lex');
+  const segs=[['all','Tous']].concat(DECKS.map(d=>[d.id,d.name.split(' ')[0]]));
+  v.innerHTML=`<h1 class="large-title">Lexique</h1>
+   <p class="subtitle">Toute la liste, avec prononciation. ${CARDS.length} mots.</p>
+   <div class="search"><span class="sic"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg></span>
+     <input id="lq" type="text" placeholder="Chercher un mot, une traduction…" autocomplete="off" value="${esc(lexQ)}"></div>
+   <div class="seg" id="lf" style="margin:12px 0 2px">${segs.map(s=>`<button class="${s[0]===lexF?'on':''}" data-v="${s[0]}">${esc(s[1])}</button>`).join('')}</div>
+   <div class="list" id="ll" style="margin-top:14px"></div>`;
+  const inp=$('#lq');
+  inp.addEventListener('input',()=>{lexQ=inp.value;fillLex();});
+  seg('#lf',x=>{lexF=x;fillLex();});
+  fillLex();
+}
+function fillLex(){
+  const q=norm(lexQ);
+  let list=CARDS.filter(c=>lexF==='all'||c.deck===lexF);
+  if(q)list=list.filter(c=>norm(c.en).includes(q)||norm(c.fr).includes(q)||norm(c.note).includes(q));
+  list=list.slice().sort((a,b)=>a.en.replace(/^(to|a|an|the) /,'').localeCompare(b.en.replace(/^(to|a|an|the) /,'')));
+  const ll=$('#ll');
+  if(!list.length){ll.innerHTML=`<div class="empty">Aucun mot trouvé.</div>`;return;}
+  ll.innerHTML=list.map(c=>`<div class="lexrow">
+     <button class="sp" data-en="${esc(c.en)}" aria-label="Écouter">${IC.speak}</button>
+     <div class="txt"><span class="en">${esc(c.en)}</span> — <span class="fr">${esc(c.fr)}</span>${c.ex?`<span class="ex2">${esc(c.ex)}</span>`:''}</div>
+   </div>`).join('');
+  ll.querySelectorAll('.sp').forEach(b=>b.onclick=()=>speak(b.dataset.en));
+}
+
+/* ============ FEEDBACK ============ */
+function renderFeedback(){
+  const v=$('#view-feedback');
+  const configured=/^https?:\/\//.test(FEEDBACK_FORM_URL);
+  v.innerHTML=`<h1 class="large-title">Signaler</h1>
+   <p class="subtitle">Un mot manque, une traduction est fausse, une coquille ? Signale-le pour qu\u2019on complète la liste commune.</p>
+   <div class="fb-card">
+     <p style="margin:0">Le formulaire s\u2019ouvre dans un nouvel onglet. Pas besoin de compte.</p>
+     ${configured
+       ? `<a class="btn primary block lg" href="${esc(FEEDBACK_FORM_URL)}" target="_blank" rel="noopener">Ouvrir le formulaire</a>`
+       : `<button class="btn block lg" disabled>Formulaire à configurer</button>
+          <div class="note-box">Pour l\u2019activer : crée un Google Form (2 champs — « Mot » et « Détail »), copie son lien de partage, et colle-le dans <code>FEEDBACK_FORM_URL</code> en haut du fichier <code>index.html</code>.</div>`}
+   </div>`;
+}
+
+/* ============ THEME ============ */
+(function(){
+  let t=null;try{t=localStorage.getItem(LS_THEME)}catch(e){}
+  if(t)document.documentElement.setAttribute('data-theme',t);
+  const btn=$('#themeBtn');btn.innerHTML=IC.sun;
+  btn.onclick=()=>{
+    const cur=document.documentElement.getAttribute('data-theme');
+    const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme:dark)').matches;
+    const nx=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',nx);
+    try{localStorage.setItem(LS_THEME,nx)}catch(e){}
+  };
+})();
+
+/* ============ BOOT ============ */
+buildTabs();
+show('home');
+</script>
+</body>
+</html>
