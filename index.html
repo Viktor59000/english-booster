@@ -427,9 +427,8 @@ function $(s){return document.querySelector(s)}
 function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
 function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\b(to|a|an|the)\b/g,'').replace(/\s+/g,' ').trim()}
 function exHTML(c){
-  var head=c.en.replace(/^(to|a|an|the)\s+/i,'').split(' ')[0];
   var s=esc(c.ex); if(!s)return '';
-  try{s=s.replace(new RegExp('('+head.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','i'),'<b>$1</b>');}catch(e){}
+  var re=wordRe(c); if(re)s=s.replace(re,'<b>$1</b>');
   return '<div class="ex">'+s+'</div>';
 }
 var voices=[];
@@ -498,7 +497,17 @@ var FMT_HINT={
 function seg(sel,cb){document.querySelectorAll(sel+' button').forEach(function(b){b.onclick=function(){document.querySelectorAll(sel+' button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');cb(b.dataset.v)}})}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function poolFor(deck){return deck==='all'?CARDS.slice():deckCards(deck)}
-function headword(c){return c.en.replace(/^(to|a|an|the)\s+/i,'').split(' ')[0]}
+function headword(c){return c.en.replace(/^((to|a|an|the|be)\s+)+/i,'').split(' ')[0]}
+/* irregular forms used in the example sentences */
+var IRREG={bring:['brought'],spy:['spied','spies']};
+function wordRe(c){
+  var h=headword(c), cands=[h].concat(IRREG[h.toLowerCase()]||[]);
+  for(var i=0;i<cands.length;i++){
+    var re=new RegExp('\\b('+cands[i].replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','i');
+    if(re.test(c.ex||''))return re;
+  }
+  return null;
+}
 function goStudy(){VIEWS.forEach(function(v){$('#view-'+v).classList.add('hidden')});$('#view-study').classList.remove('hidden');window.scrollTo(0,0);}
 
 function openSetup(deck){
@@ -531,7 +540,7 @@ function start(){
   if(S.cap!==999)pool=pool.slice(0,S.cap);
   if(!pool.length)pool=poolFor(S.deck).slice(0,S.cap===999?999:S.cap);
   if(S.deck==='all'||S.fmt==='mix')pool=shuffle(pool);
-  S.queue=pool.map(function(c){return c.id});S.total=S.queue.length;S.done=0;S.right=0;S.wrong=0;
+  S.queue=pool.map(function(c){return c.id});S.total=S.queue.length;S.done=0;S.right=0;S.wrong=0;S.retry={};
   nextCard();
 }
 function nextCard(){
@@ -553,7 +562,7 @@ function renderCard(){
   if(f==='qcm')return fmtQCM();
   if(f==='write')return fmtWrite();
   if(f==='cloze')return fmtCloze();
-  if(f==='dictee')return fmtDictee();
+  if(f==='dictee')return window.speechSynthesis?fmtDictee():fmtWrite(); /* no voice on this device: write instead */
   fmtCard();
 }
 function fmtCard(){
@@ -573,7 +582,13 @@ function fmtCard(){
 }
 function fmtQCM(){
   var c=S.cur,v=$('#view-study');
-  var others=shuffle(poolFor(S.deck).filter(function(x){return x.id!==c.id&&x.fr!==c.fr})).slice(0,3).map(function(x){return x.fr});
+  /* 3 distractors: distinct translations, never the same headword (ex. "a runway" vs "the runway") */
+  var hc=headword(c).toLowerCase(), seenFr={}, others=[];
+  seenFr[norm(c.fr)]=1;
+  shuffle(poolFor(S.deck)).forEach(function(x){
+    if(others.length>=3||x.id===c.id||headword(x).toLowerCase()===hc||seenFr[norm(x.fr)])return;
+    seenFr[norm(x.fr)]=1;others.push(x.fr);
+  });
   var opts=shuffle([c.fr].concat(others));
   v.innerHTML=head()+'<div class="flash" style="min-height:auto;padding-bottom:18px"><span class="cue">QCM \u00b7 Anglais</span>'+
     '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center">'+
@@ -587,7 +602,7 @@ function fmtQCM(){
     document.querySelectorAll('.qopt').forEach(function(x){x.disabled=true;if(x.dataset.ok==='1')x.classList.add('good')});
     if(!ok)b.classList.add('bad');
     $('#rev').innerHTML='<div class="reveal-in" style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:10px">'+answerExtras(c)+'</div>';
-    var cont=document.createElement('button');cont.className='btn '+(ok?'good':'tinted')+' block';cont.textContent='Continuer';cont.style.marginTop='6px';cont.onclick=nextCard;$('#foot').appendChild(cont);
+    var cont=document.createElement('button');cont.className='btn '+(ok?'good':'tinted')+' block';cont.textContent='Continuer';cont.style.marginTop='6px';cont.onclick=nextCard;$('#foot').appendChild(cont);cont.focus({preventScroll:true});
   }});
 }
 function fmtWrite(){
@@ -603,9 +618,10 @@ function fmtWrite(){
 }
 function fmtCloze(){
   var c=S.cur,v=$('#view-study'),h=headword(c);
-  var sent=c.ex,token=h,blanked=false;
-  try{var re=new RegExp('\\b('+h.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\w*)','i');var m=sent.match(re);if(m){token=m[1];sent=esc(c.ex).replace(re,'<span class="blank">______</span>');blanked=true;}}catch(e){}
-  if(!blanked)return fmtWrite();
+  var re=wordRe(c);
+  if(!re)return fmtWrite();
+  var token=c.ex.match(re)[1];
+  var sent=esc(c.ex).replace(re,'<span class="blank">______</span>');
   v.innerHTML=head()+'<div class="flash"><span class="cue">Compl\u00e8te \u00b7 '+esc(c.fr)+'</span>'+
     '<div class="ex" style="font-size:17px">'+sent+'</div><div id="rev"></div></div>'+
     '<div class="flash-foot" id="foot"><input class="typed" id="tp" placeholder="Le mot manquant\u2026" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">'+
@@ -618,10 +634,11 @@ function fmtCloze(){
 function fmtDictee(){
   var c=S.cur,v=$('#view-study');
   v.innerHTML=head()+'<div class="flash"><span class="cue">Dict\u00e9e \u00b7 \u00e9coute et \u00e9cris</span>'+
-    '<button class="speak" id="sp" style="width:66px;height:66px" aria-label="R\u00e9\u00e9couter">'+IC.speak+'</button><div id="rev"></div></div>'+
+    '<button class="speak" id="sp" style="width:66px;height:66px" aria-label="R\u00e9\u00e9couter">'+IC.speak+'</button>'+
+    '<p class="hint" style="margin:0">Touche le haut-parleur pour r\u00e9\u00e9couter</p><div id="rev"></div></div>'+
     '<div class="flash-foot" id="foot"><input class="typed" id="tp" placeholder="\u00c9cris ce que tu entends\u2026" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">'+
     '<button class="btn primary block" id="ck">V\u00e9rifier</button></div>';
-  bindQuit();var inp=$('#tp');setTimeout(function(){inp.focus();speak(c.en);},150);
+  bindQuit();var inp=$('#tp');speak(c.en);setTimeout(function(){inp.focus()},50); /* speak inside the tap so iOS allows audio */
   $('#sp').onclick=function(){speak(c.en)};
   var run=function(){typedCheck([c.en,c.en.replace(/\(.*?\)/g,'')],inp,'dictee')};
   $('#ck').onclick=run;
@@ -641,13 +658,20 @@ function typedCheck(accept,inp,kind){
      '<button class="speak" id="sp2" aria-label="\u00c9couter">'+IC.speak+'</button></div>';
   $('#sp2').onclick=function(){speak(c.en)};
   $('#foot').innerHTML='<button class="btn '+(ok?'good':'tinted')+' block" id="cont">Continuer</button>'+(ok?'':'<p class="hint">Cette carte reviendra bient\u00f4t.</p>');
-  $('#cont').onclick=nextCard;
+  $('#cont').onclick=nextCard;$('#cont').focus({preventScroll:true}); /* Enter continues */
 }
 function commit(ok){
   var c=S.cur, s=cst(c.id)||{box:0}; var box=s.box||0;
   box=ok?Math.min(box+1,5):1;
   progress[c.id]={box:box,due:ok?now()+INTERVALS[box]*DAY:now(),seen:(s.seen||0)+1};
-  save();S.done++; if(ok)S.right++; else{S.wrong++; if(S.queue.length<8)S.queue.push(c.id);}
+  save();S.done++;
+  if(ok)S.right++;
+  else{
+    S.wrong++;
+    /* a missed card comes back once, a few cards later, and counts in the total */
+    S.retry=S.retry||{};
+    if(!S.retry[c.id]){S.retry[c.id]=1;S.queue.splice(Math.min(3,S.queue.length),0,c.id);S.total++;}
+  }
 }
 function finish(){
   var acc=S.done?Math.round(S.right/S.done*100):0;
